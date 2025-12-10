@@ -1344,12 +1344,18 @@
             });
         });
 
-        // Product Card Click
+      // Product Card Click → Open product landing page
 document.querySelectorAll('.product-card').forEach(card => {
-    card.addEventListener('click', function() {
-        alert('Product detail page would open here');
+    card.addEventListener('click', function(e) {
+
+        // ignore Quick View button
+        if (e.target.closest('.quick-view')) return;
+
+        const slug = card.getAttribute('data-product-slug') || 'product';
+        window.location.href = 'product.html?slug=' + slug;
     });
 });
+
 
         // Newsletter Form
         document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
