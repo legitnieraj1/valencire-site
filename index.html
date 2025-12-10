@@ -1029,6 +1029,13 @@
     </style>
 </head>
 <body>
+
+    <!-- PRELOADER WITH FILM GRAIN -->
+<div id="preloader">
+    <div class="grain"></div>
+    <div class="preloader-logo">VALENCIRÉ®</div>
+</div>
+
     <!-- Top Bar -->
     <div class="top-bar">
         <div class="top-bar-content">
@@ -1444,24 +1451,17 @@ document.querySelectorAll('.product-card').forEach(card => {
         });
 
 
-        // PRELOADER CONTROL
+        // ================= PRELOADER CONTROL =================
 window.addEventListener('load', () => {
-    const pre = document.getElementById('preloader');
+    const loader = document.getElementById('preloader');
 
-    // delay to allow fade-in animation to play smoothly
+    // Allow logo animation to finish before fade-out
     setTimeout(() => {
-        pre.classList.add('fade-out');
-
-        // remove preloader from DOM after animation
-        setTimeout(() => pre.remove(), 800);
-    }, 1200);
+        loader.classList.add('fade-out');
+        setTimeout(() => loader.remove(), 900);
+    }, 1500);
 });
 
     </script>
 </body>
-    <!-- PRELOADER -->
-<div id="preloader">
-    <div class="preloader-logo">VALENCIRÉ®</div>
-</div>
-
 </html>
