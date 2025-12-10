@@ -395,11 +395,19 @@
             margin: 0 auto;
         }
 
-        .product-card {
-            background: var(--primary-white);
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
+        /* ---- PRODUCT: square premium card + hover zoom ---- */
+.product-card {
+    background: var(--primary-white);
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(.2,.9,.3,1), box-shadow 0.35s;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    box-shadow: 0 6px 18px rgba(12,12,12,0.06);
+    border: 1px solid rgba(0,0,0,0.04);
+}
 
         .product-card:hover {
             transform: translateY(-5px);
@@ -407,73 +415,84 @@
         }
 
         .product-image {
-            position: relative;
-            height: 350px;
-            overflow: hidden;
-            background: var(--light-gray);
-        }
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1; /* modern and simplest way to make square */
+    overflow: hidden;
+    background: linear-gradient(180deg, #fafafa 0%, #f2f2f2 100%);
+}
 
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+       .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    transition: transform 0.6s cubic-bezier(.2,.9,.3,1);
+    will-change: transform;
+}
 
         .product-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: var(--primary-black);
-            color: var(--primary-white);
-            padding: 5px 10px;
-            font-size: 11px;
-            letter-spacing: 0.5px;
-        }
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0,0,0,0.9);
+    color: var(--primary-white);
+    padding: 6px 10px;
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    border-radius: 8px;
+    z-index: 3;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
 
         .quick-view {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%) translateY(50px);
-            background: var(--primary-white);
-            padding: 10px 20px;
-            font-size: 12px;
-            letter-spacing: 0.5px;
-            transition: transform 0.3s;
-            border: 1px solid var(--primary-black);
-        }
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%) translateY(48px);
+    background: var(--primary-white);
+    padding: 10px 18px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    transition: transform 0.28s ease, opacity 0.28s;
+    border: 1px solid var(--primary-black);
+    border-radius: 999px;
+    z-index: 3;
+    opacity: 0;
+}
 
-        .product-card:hover .quick-view {
-            transform: translateX(-50%) translateY(0);
-        }
+        /* on hover: lift card, reveal quick view, zoom image slightly */
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 40px rgba(12,12,12,0.12);
+}
+.product-card:hover .product-image img {
+    transform: scale(1.08);
+}
+.product-card:hover .quick-view {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
 
-        .product-info {
-            padding: 20px;
-        }
-
-        .product-name {
-            font-size: 14px;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        .product-price {
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        .product-colors {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .color-swatch {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 1px solid var(--border-gray);
-        }
+/* product-info spacing & premium typography */
+.product-info {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.product-name {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+.product-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+}
+.product-colors { margin-top: 6px; }
+.color-swatch { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--border-gray); }
 
         /* Newsletter Section */
         .newsletter-section {
@@ -1061,28 +1080,27 @@
 
   
 
-    <!-- Featured Products (ONLY ONE PRODUCT KEPT) -->
-    <section class="featured-section">
-        <h2 class="section-title">Featured Products</h2>
-        <div class="products-grid">
-            <!-- Single Product Card - replace image src later -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="blood noir™.png" alt="Product">
-                    <span class="product-badge">NEW</span>
-                    <button class="quick-view">QUICK VIEW</button>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">Blood Noir™</h3>
-                    <p class="product-price">₹1299</p>
-                    <div class="product-colors">
-                        <span class="color-swatch" style="background: #000"></span>
-                        <span class="color-swatch" style="background: #c00000"></span>
-                    </div>
+  <section class="featured-section">
+    <h2 class="section-title">Featured Products</h2>
+    <div class="products-grid">
+        <!-- Single Square Product Card - replace image src later -->
+        <div class="product-card" data-product-slug="compression-spiderman-shirt">
+            <div class="product-image">
+                <img src="blood noir™.png" alt="Blood noir™">
+                <span class="product-badge">NEW</span>
+                <button class="quick-view" aria-label="Quick view">QUICK VIEW</button>
+            </div>
+            <div class="product-info">
+                <h3 class="product-name">blood noir™t</h3>
+                <p class="product-price">₹1799</p>
+                <div class="product-colors" aria-hidden="true">
+                    <span class="color-swatch" style="background: #000"></span>
+                    <span class="color-swatch" style="background: #c00000"></span>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Newsletter Section -->
     <section class="newsletter-section">
@@ -1290,11 +1308,11 @@
         });
 
         // Product Card Click
-        document.querySelectorAll('.product-card').forEach(card => {
-            card.addEventListener('click', function() {
-                alert('Product detail page would open here');
-            });
-        });
+document.querySelectorAll('.product-card').forEach(card => {
+    card.addEventListener('click', function() {
+        alert('Product detail page would open here');
+    });
+});
 
         // Newsletter Form
         document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
