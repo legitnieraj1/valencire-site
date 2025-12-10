@@ -414,22 +414,28 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        .product-image {
+        /* Product Image — Fuark style card */
+.product-image {
     position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1; /* modern and simplest way to make square */
+    height: 420px;   /* ← Perfect size like Fuark */
     overflow: hidden;
-    background: linear-gradient(180deg, #fafafa 0%, #f2f2f2 100%);
+    background: #f3f3f3;
+    border-radius: 12px;
 }
+
 
        .product-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center center;
-    transition: transform 0.6s cubic-bezier(.2,.9,.3,1);
-    will-change: transform;
+    object-position: center;
+    transition: transform 0.5s ease;
 }
+.product-card:hover .product-image img {
+    transform: scale(1.06); /* slight zoom – premium */
+}
+
 
         .product-badge {
     position: absolute;
@@ -462,17 +468,19 @@
 }
 
         /* on hover: lift card, reveal quick view, zoom image slightly */
+.product-card {
+    background: var(--primary-white);
+    padding-bottom: 18px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: transform .25s ease, box-shadow .25s ease;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
 .product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 18px 40px rgba(12,12,12,0.12);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
 }
-.product-card:hover .product-image img {
-    transform: scale(1.08);
-}
-.product-card:hover .quick-view {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-}
+
 
 /* product-info spacing & premium typography */
 .product-info {
