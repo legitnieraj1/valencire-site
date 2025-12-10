@@ -5,6 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VALENCIRÉ® Official Site | Redefining Luxury Fashion</title>
     <style>
+
+
+        /* ================= PRELOADER ================= */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 1;
+    transition: opacity 0.8s ease;
+}
+
+#preloader.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.preloader-logo {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 32px;
+    font-weight: 300;
+    letter-spacing: 6px;
+    color: #fff;
+    opacity: 0;
+    animation: fadeInOut 2.2s ease forwards;
+}
+
+@keyframes fadeInOut {
+    0%   { opacity: 0; transform: scale(0.96); }
+    40%  { opacity: 1; transform: scale(1); }
+    80%  { opacity: 1; }
+    100% { opacity: 0.85; }
+}
+
         * {
             margin: 0;
             padding: 0;
@@ -1402,6 +1442,26 @@ document.querySelectorAll('.product-card').forEach(card => {
             
             lastScroll = currentScroll;
         });
+
+
+        // PRELOADER CONTROL
+window.addEventListener('load', () => {
+    const pre = document.getElementById('preloader');
+
+    // delay to allow fade-in animation to play smoothly
+    setTimeout(() => {
+        pre.classList.add('fade-out');
+
+        // remove preloader from DOM after animation
+        setTimeout(() => pre.remove(), 800);
+    }, 1200);
+});
+
     </script>
 </body>
+    <!-- PRELOADER -->
+<div id="preloader">
+    <div class="preloader-logo">VALENCIRÉ®</div>
+</div>
+
 </html>
