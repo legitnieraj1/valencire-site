@@ -3,438 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VALENCIRÉ® | Luxury Fashion House</title>
+    <title>VALENCIRÉ | Official Store</title>
     <style>
-        /* --- BASE STYLES --- */
+        /* --- RESET & VARIABLES --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         :root {
-            --primary-black: #111;
-            --primary-white: #fff;
-            --light-gray: #f9f9f9;
-            --medium-gray: #777;
-            --border-gray: #e0e0e0;
-            --accent-gold: #D4AF37;
+            --bg-color: #ffffff;
+            --text-main: #000000;
+            --text-light: #666666;
+            --border-color: #e5e5e5;
+            --btn-hover: #333333;
         }
+
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             overflow-x: hidden;
-            line-height: 1.6;
-            color: var(--primary-black);
-            background: var(--primary-white);
+            line-height: 1.5;
         }
 
-        /* --- UTILITIES --- */
+        /* --- UTILITY CLASSES --- */
         .hidden { display: none !important; }
-        .fade-in { animation: fadeIn 0.5s ease-in; }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- NAVIGATION --- */
-        .top-bar {
-            background-color: var(--primary-black);
-            color: var(--primary-white);
-            padding: 8px 0;
-            font-size: 10px;
-            text-align: center;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .main-header {
-            background-color: var(--primary-white);
+        /* --- HEADER --- */
+        header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
             padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid transparent;
-            transition: 0.3s;
+            transition: border-color 0.3s;
         }
-        .main-header.scrolled {
-            border-bottom: 1px solid var(--border-gray);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-        }
-        .logo { font-size: 24px; font-weight: 700; letter-spacing: 3px; cursor: pointer; }
-        .nav-link { 
-            font-size: 12px; letter-spacing: 1px; cursor: pointer; text-decoration: none; 
-            color: var(--primary-black); margin-right: 25px; font-weight: 500;
-        }
-        .header-icons { display: flex; gap: 20px; align-items: center; }
-        .header-icon { cursor: pointer; position: relative; }
-        .cart-count {
-            position: absolute; top: -5px; right: -8px;
-            background: var(--primary-black); color: var(--primary-white);
-            font-size: 9px; padding: 2px 5px; border-radius: 50%;
-        }
+        header.scrolled { border-bottom: 1px solid var(--border-color); }
 
-        /* --- HERO SECTION --- */
-        .hero-section {
-            position: relative; height: 85vh; width: 100%;
-            background: url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .hero-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.2);
-        }
-        .hero-content {
-            position: relative; z-index: 2; text-align: center; color: white;
-        }
-        .hero-title {
-            font-size: 4rem; font-weight: 300; letter-spacing: 5px; margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-        .btn {
-            padding: 15px 40px; border: 1px solid white; background: transparent;
-            color: white; font-size: 12px; letter-spacing: 2px; cursor: pointer;
-            transition: 0.3s; text-transform: uppercase;
-        }
-        .btn:hover { background: white; color: black; }
-        .btn-black { background: black; color: white; border: 1px solid black; }
-        .btn-black:hover { background: #333; border-color: #333; }
-
-        /* --- PRODUCT GRID (HOME) --- */
-        .featured-section { padding: 80px 40px; }
-        .section-title { text-align: center; font-size: 24px; letter-spacing: 2px; margin-bottom: 50px; font-weight: 300; }
-        .products-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 40px; max-width: 1400px; margin: 0 auto;
-        }
-        .product-card { cursor: pointer; group: hover; }
-        .product-image-wrap {
-            position: relative; height: 400px; overflow: hidden; margin-bottom: 15px; background: #f0f0f0;
-        }
-        .product-image-wrap img {
-            width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;
-        }
-        .product-card:hover img { transform: scale(1.05); }
-        .product-info h3 { font-size: 13px; font-weight: 400; letter-spacing: 0.5px; margin-bottom: 5px; }
-        .product-price { font-size: 13px; font-weight: 600; }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; }
         
-        /* --- PRODUCT DETAIL PAGE (PDP) --- */
-        .pdp-container {
-            max-width: 1200px; margin: 0 auto; padding: 40px 20px;
-            display: grid; grid-template-columns: 1.5fr 1fr; gap: 60px;
-        }
-        .pdp-gallery { display: grid; gap: 10px; }
-        .pdp-main-img { 
-            width: 100%; height: 700px; object-fit: cover; background: #f5f5f5; 
-        }
-        .pdp-details { padding-top: 20px; position: sticky; top: 100px; height: fit-content; }
-        .back-btn { 
-            border: none; background: none; cursor: pointer; font-size: 12px; 
-            letter-spacing: 1px; margin-bottom: 30px; display: flex; align-items: center; gap: 5px;
-        }
-        .pdp-title { font-size: 28px; font-weight: 300; margin-bottom: 10px; letter-spacing: 1px; }
-        .pdp-price { font-size: 18px; font-weight: 500; margin-bottom: 30px; }
-        .pdp-description { font-size: 14px; color: var(--medium-gray); margin-bottom: 40px; max-width: 90%; }
-        
-        /* Size Selector */
-        .size-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block; }
-        .size-grid { display: flex; gap: 10px; margin-bottom: 40px; }
-        .size-opt {
-            width: 45px; height: 45px; border: 1px solid var(--border-gray);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 12px; cursor: pointer; transition: 0.2s;
-        }
-        .size-opt:hover { border-color: black; }
-        .size-opt.selected { background: black; color: white; border-color: black; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-item { font-size: 12px; font-weight: 600; letter-spacing: 1px; cursor: pointer; text-transform: uppercase; transition: color 0.2s; }
+        .nav-item:hover { color: var(--text-light); }
 
-        .add-to-cart-btn {
-            width: 100%; padding: 18px; background: var(--primary-black); color: white;
-            border: none; font-size: 13px; letter-spacing: 2px; cursor: pointer;
-            transition: 0.3s; text-transform: uppercase; margin-bottom: 20px;
-        }
-        .add-to-cart-btn:hover { background: #333; }
-
-        .accordion { border-top: 1px solid var(--border-gray); }
-        .accordion-item { border-bottom: 1px solid var(--border-gray); }
-        .accordion-header {
-            padding: 20px 0; cursor: pointer; display: flex; justify-content: space-between;
-            font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
-        }
-        .accordion-content {
-            height: 0; overflow: hidden; transition: height 0.3s ease; color: var(--medium-gray); font-size: 13px;
-        }
-        .accordion-item.active .accordion-content { height: auto; padding-bottom: 20px; }
-
-        /* --- FOOTER --- */
-        footer { background: var(--primary-black); color: #999; padding: 60px 40px; margin-top: 80px; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 1400px; margin: 0 auto; }
-        .footer-col h4 { color: white; font-size: 12px; letter-spacing: 1px; margin-bottom: 20px; }
-        .footer-col ul { list-style: none; }
-        .footer-col ul li { margin-bottom: 10px; font-size: 13px; }
-        
-        /* Mobile Resp */
-        @media (max-width: 768px) {
-            .pdp-container { grid-template-columns: 1fr; }
-            .pdp-main-img { height: 500px; }
-            .hero-title { font-size: 2.5rem; }
-            .header-left { display: none; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="top-bar">
-        Free Worldwide Shipping on Orders Over ₹50,000
-    </div>
-
-    <header class="main-header" id="mainHeader">
-        <div class="header-left">
-            <a onclick="goHome()" class="nav-link">WOMEN</a>
-            <a onclick="goHome()" class="nav-link">MEN</a>
-            <a onclick="goHome()" class="nav-link">COLLECTIONS</a>
-        </div>
-        <div class="logo" onclick="goHome()">VALENCIRÉ</div>
-        <div class="header-icons">
-            <div class="header-icon">SEARCH</div>
-            <div class="header-icon">
-                BAG 
-                <span class="cart-count" id="cartCount">0</span>
-            </div>
-        </div>
-    </header>
-
-    <div id="home-view" class="fade-in">
-        <section class="hero-section">
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <h1 class="hero-title">Automne Hiver '25</h1>
-                <button class="btn" onclick="document.getElementById('products-section').scrollIntoView({behavior: 'smooth'})">Discover Collection</button>
-            </div>
-        </section>
-
-        <section class="featured-section" id="products-section">
-            <h2 class="section-title">READY TO WEAR</h2>
-            <div class="products-grid" id="products-grid-container">
-                </div>
-        </section>
-    </div>
-
-    <div id="product-view" class="hidden fade-in">
-        <div class="pdp-container">
-            <div class="pdp-gallery">
-                <img id="pdp-img" src="" alt="Product Image" class="pdp-main-img">
-            </div>
-
-            <div class="pdp-details">
-                <button class="back-btn" onclick="goHome()">← BACK TO COLLECTION</button>
-                
-                <h1 class="pdp-title" id="pdp-title">Product Title</h1>
-                <p class="pdp-price" id="pdp-price">₹0.00</p>
-                <p class="pdp-description" id="pdp-desc">Description goes here.</p>
-
-                <span class="size-label">Select Size</span>
-                <div class="size-grid">
-                    <div class="size-opt" onclick="selectSize(this)">XS</div>
-                    <div class="size-opt" onclick="selectSize(this)">S</div>
-                    <div class="size-opt" onclick="selectSize(this)">M</div>
-                    <div class="size-opt" onclick="selectSize(this)">L</div>
-                </div>
-
-                <button class="add-to-cart-btn" onclick="addToCart()">Add to Shopping Bag</button>
-
-                <div class="accordion">
-                    <div class="accordion-item" onclick="toggleAccordion(this)">
-                        <div class="accordion-header">
-                            <span>Composition & Care</span>
-                            <span>+</span>
-                        </div>
-                        <div class="accordion-content">
-                            100% Organic Silk. Dry clean only. Made in Italy. Handle with care.
-                        </div>
-                    </div>
-                    <div class="accordion-item" onclick="toggleAccordion(this)">
-                        <div class="accordion-header">
-                            <span>Shipping & Returns</span>
-                            <span>+</span>
-                        </div>
-                        <div class="accordion-content">
-                            Complimentary shipping. Returns accepted within 14 days of delivery.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>CLIENT SERVICES</h4>
-                <ul>
-                    <li>Contact Us</li>
-                    <li>Delivery</li>
-                    <li>Returns</li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>THE COMPANY</h4>
-                <ul>
-                    <li>Careers</li>
-                    <li>Legal</li>
-                    <li>Privacy Policy</li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>CONNECT</h4>
-                <ul>
-                    <li>Instagram</li>
-                    <li>Newsletter</li>
-                </ul>
-            </div>
-        </div>
-        <div style="margin-top: 40px; font-size: 11px; text-align: center; border-top: 1px solid #333; padding-top: 20px;">
-            © 2025 VALENCIRÉ. All rights reserved.
-        </div>
-    </footer>
-
-    <script>
-        // --- DATA ---
-        const products = [
-            {
-                id: 1,
-                name: "Silk Evening Gown",
-                price: "₹1,85,000",
-                image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&auto=format&fit=crop&q=60",
-                desc: "A floor-length evening gown crafted from the finest mulberry silk. Features a draped back and elegant silhouette suitable for the most exclusive galas."
-            },
-            {
-                id: 2,
-                name: "Structured Wool Coat",
-                price: "₹2,45,000",
-                image: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=800&auto=format&fit=crop&q=60",
-                desc: "Oversized structured coat made from virgin wool blend. A timeless piece featuring architectural shoulders and a concealed button placket."
-            },
-            {
-                id: 3,
-                name: "The Signature Tote",
-                price: "₹1,45,000",
-                image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=60",
-                desc: "Italian leather tote bag with gold-plated hardware. Spacious enough for daily essentials while maintaining a sleek, sophisticated profile."
-            },
-            {
-                id: 4,
-                name: "Velvet Ankle Boots",
-                price: "₹75,000",
-                image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=60",
-                desc: "Handcrafted velvet boots with a distinct block heel. The perfect balance of comfort and high fashion statement."
-            },
-            {
-                id: 5,
-                name: "Cashmere Turtleneck",
-                price: "₹65,000",
-                image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&auto=format&fit=crop&q=60",
-                desc: "Pure cashmere sweater in a relaxed fit. Soft to the touch and provides exceptional warmth without the weight."
-            },
-            {
-                id: 6,
-                name: "Pleated Midi Skirt",
-                price: "₹95,000",
-                image: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=800&auto=format&fit=crop&q=60",
-                desc: "High-waisted midi skirt with permanent pleating. Creates beautiful movement with every step."
-            }
-        ];
-
-        // --- ELEMENTS ---
-        const homeView = document.getElementById('home-view');
-        const productView = document.getElementById('product-view');
-        const productsContainer = document.getElementById('products-grid-container');
-        const cartCountEl = document.getElementById('cartCount');
-        let cartItems = 0;
-
-        // --- INITIALIZATION ---
-        function init() {
-            renderProducts();
-            
-            // Header scroll effect
-            window.addEventListener('scroll', () => {
-                const header = document.getElementById('mainHeader');
-                if (window.scrollY > 50) header.classList.add('scrolled');
-                else header.classList.remove('scrolled');
-            });
-        }
-
-        // --- RENDER PRODUCTS ---
-        function renderProducts() {
-            productsContainer.innerHTML = products.map(product => `
-                <div class="product-card" onclick="openProduct(${product.id})">
-                    <div class="product-image-wrap">
-                        <img src="${product.image}" alt="${product.name}">
-                    </div>
-                    <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <p class="product-price">${product.price}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // --- NAVIGATION LOGIC ---
-        function openProduct(id) {
-            const product = products.find(p => p.id === id);
-            if (!product) return;
-
-            // Populate Data
-            document.getElementById('pdp-img').src = product.image;
-            document.getElementById('pdp-title').innerText = product.name;
-            document.getElementById('pdp-price').innerText = product.price;
-            document.getElementById('pdp-desc').innerText = product.desc;
-
-            // Reset UI states
-            document.querySelectorAll('.size-opt').forEach(el => el.classList.remove('selected'));
-            document.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('active'));
-
-            // Switch View
-            homeView.classList.add('hidden');
-            productView.classList.remove('hidden');
-            window.scrollTo(0, 0);
-        }
-
-        function goHome() {
-            productView.classList.add('hidden');
-            homeView.classList.remove('hidden');
-            window.scrollTo(0, 0);
-        }
-
-        // --- INTERACTIONS ---
-        function selectSize(element) {
-            document.querySelectorAll('.size-opt').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-        }
-
-        function addToCart() {
-            const selectedSize = document.querySelector('.size-opt.selected');
-            if (!selectedSize) {
-                alert("Please select a size.");
-                return;
-            }
-            cartItems++;
-            cartCountEl.innerText = cartItems;
-            
-            // Button feedback
-            const btn = document.querySelector('.add-to-cart-btn');
-            const originalText = btn.innerText;
-            btn.innerText = "ADDED TO BAG";
-            btn.style.background = "#fff";
-            btn.style.color = "#000";
-            btn.style.border = "1px solid #000";
-            
-            setTimeout(() => {
-                btn.innerText = originalText;
-                btn.style.background = "var(--primary-black)";
-                btn.style.color = "white";
-                btn.style.border = "none";
-            }, 2000);
-        }
-
-        function toggleAccordion(element) {
-            element.classList.toggle('active');
-        }
-
-        // Run
-        init();
-    </script>
-</body>
-</html>
+        .cart-icon { position: relative; cursor: pointer; font-size: 12px; font-weight: 600; }
+        .cart-badge { 
+            position: absolute; top: -8px; right: -12px; 
+            background: black; color: white; font-size:
