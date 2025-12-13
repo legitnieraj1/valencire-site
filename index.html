@@ -128,16 +128,18 @@
 
         /* Main Header */
         .main-header {
-            background-color: var(--primary-white);
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
+    background: transparent;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    transition: background 0.35s ease, box-shadow 0.35s ease;
+}
+
 
         .logo-container {
             position: absolute;
