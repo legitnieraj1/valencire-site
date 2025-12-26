@@ -147,7 +147,13 @@
             filter: brightness(.75) contrast(1.1) saturate(1.15);
         }
 
-       
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.3) 0%, rgba(10, 10, 10, 0.6) 100%);
+            pointer-events: none;
+        }
+
         .hero-content {
             position: absolute;
             bottom: 140px;
@@ -246,8 +252,7 @@
             cursor: pointer;
             transition: .3s ease;
             text-transform: uppercase;
-            border-radius: 999px;
-
+            border-radius: 2px;
         }
 
         .filter-btn:hover,
@@ -373,8 +378,9 @@
         }
 
         .size-selector {
-            display: none
-            
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .size-btn {
@@ -408,8 +414,6 @@
             font-weight: 500;
             position: relative;
             overflow: hidden;
-            border-radius: 999px;
-
         }
 
         .card-btn::before {
@@ -660,8 +664,6 @@
             font-size: 13px;
             letter-spacing: 1px;
             transition: .3s ease;
-            border-radius: 999px;
-
         }
 
         .newsletter input:focus {
@@ -688,8 +690,6 @@
             transition: .4s ease;
             position: relative;
             overflow: hidden;
-            border-radius: 999px;
-
         }
 
         .newsletter button::before {
@@ -865,58 +865,6 @@
                 right: -100%;
             }
         }
-        /* ================= CUSTOM PRODUCT CARD (NEW) ================= */
-
-.product-card {
-    background: radial-gradient(
-        ellipse at top,
-        rgba(255,255,255,0.04),
-        rgba(0,0,0,0.95)
-    );
-    border-radius: 26px;
-    padding: 26px;
-    border: 1px solid rgba(255,255,255,0.08);
-    cursor: pointer;
-}
-
-.product-image {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 28px;
-}
-
-.product-image img {
-    width: 90%;
-    max-width: 320px;
-    filter: drop-shadow(0 40px 60px rgba(0,0,0,0.9));
-}
-
-.product-info {
-    text-align: left;
-}
-
-.product-name {
-    font-size: 15px;
-    letter-spacing: 2px;
-    margin-bottom: 6px;
-}
-
-.product-price {
-    opacity: .7;
-    margin-bottom: 20px;
-}
-
-.add-to-cart-btn {
-    width: 100%;
-    padding: 18px;
-    border-radius: 999px;
-    border: none;
-    background: #7f5cff;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-}
-
     </style>
 </head>
 
@@ -962,7 +910,11 @@
         </video>
         <div class="hero-overlay"></div>
 
-        
+        <div class="hero-content">
+            <h1 class="hero-title">VALENCIRÉ®</h1>
+            <p class="hero-subtitle">AIN'T FOR AVERAGE</p>
+            <button class="shop-btn" onclick="scrollToShop()">EXPLORE COLLECTION</button>
+        </div>
     </section>
 
     <!-- ================= FILTER BAR ================= -->
@@ -1149,25 +1101,24 @@
                 card.style.animationDelay = `${index * 0.1}s`;
 
                 card.innerHTML = `
-      <div class="product-card" onclick="viewProduct(${product.id})">
-
-    <div class="product-image">
-        <img src="${product.images.back}" alt="${product.name}">
-    </div>
-
-    <div class="product-info">
-        <h3 class="product-name">${product.name}</h3>
-        <p class="product-price">₹${product.price.toLocaleString()}</p>
-
-        <button 
-            class="add-to-cart-btn"
-            onclick="event.stopPropagation(); addToCart(${product.id}, this)">
-            Add to Cart
-        </button>
-    </div>
-
-</div>
-`;
+      <div class="image-wrap" onclick="viewProduct(${product.id})">
+        <img src="${product.images.back}" class="back" alt="${product.name}">
+        <img src="${product.images.front}" class="front" alt="${product.name}">
+        ${product.new ? '<div class="badge">NEW</div>' : ''}
+      </div>
+      <div class="card-info">
+        <h3 class="card-title" onclick="viewProduct(${product.id})" style="cursor:pointer;">${product.name}</h3>
+        <p class="card-price">₹${product.price.toLocaleString()}</p>
+        <p class="card-desc">${product.desc}</p>
+        <div class="size-selector">
+          <button class="size-btn" onclick="selectSize(this)">S</button>
+          <button class="size-btn selected" onclick="selectSize(this)">M</button>
+          <button class="size-btn" onclick="selectSize(this)">L</button>
+          <button class="size-btn" onclick="selectSize(this)">XL</button>
+        </div>
+        <button class="card-btn" onclick="addToCart(${product.id}, this)">ADD TO CART</button>
+      </div>
+    `;
 
                 container.appendChild(card);
             });
