@@ -147,13 +147,7 @@
             filter: brightness(.75) contrast(1.1) saturate(1.15);
         }
 
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.3) 0%, rgba(10, 10, 10, 0.6) 100%);
-            pointer-events: none;
-        }
-
+       
         .hero-content {
             position: absolute;
             bottom: 140px;
@@ -252,7 +246,8 @@
             cursor: pointer;
             transition: .3s ease;
             text-transform: uppercase;
-            border-radius: 2px;
+            border-radius: 999px;
+
         }
 
         .filter-btn:hover,
@@ -378,9 +373,8 @@
         }
 
         .size-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            display: none
+            
         }
 
         .size-btn {
@@ -414,6 +408,8 @@
             font-weight: 500;
             position: relative;
             overflow: hidden;
+            border-radius: 999px;
+
         }
 
         .card-btn::before {
@@ -664,6 +660,8 @@
             font-size: 13px;
             letter-spacing: 1px;
             transition: .3s ease;
+            border-radius: 999px;
+
         }
 
         .newsletter input:focus {
@@ -690,6 +688,8 @@
             transition: .4s ease;
             position: relative;
             overflow: hidden;
+            border-radius: 999px;
+
         }
 
         .newsletter button::before {
@@ -910,11 +910,7 @@
         </video>
         <div class="hero-overlay"></div>
 
-        <div class="hero-content">
-            <h1 class="hero-title">VALENCIRÉ®</h1>
-            <p class="hero-subtitle">AIN'T FOR AVERAGE</p>
-            <button class="shop-btn" onclick="scrollToShop()">EXPLORE COLLECTION</button>
-        </div>
+        
     </section>
 
     <!-- ================= FILTER BAR ================= -->
