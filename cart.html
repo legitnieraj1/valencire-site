@@ -412,6 +412,26 @@ header img:hover {
   animation: fadeIn .6s ease;
 }
 
+.empty-cart-link {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 32px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 999px;
+  color: #f5f5f5;
+  text-decoration: none;
+  letter-spacing: 2px;
+  font-size: 12px;
+  transition: all .3s ease;
+}
+
+.empty-cart-link:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.5);
+  transform: translateY(-2px);
+}
+
 /* =========================================================
    DISCOUNT APPLIED
 ========================================================= */
@@ -530,11 +550,14 @@ header img:hover {
 let discountApplied = false;
 
 function getCart() {
-  return JSON.parse(localStorage.getItem("valencire_cart")) || [];
+  const cartData = localStorage.getItem("valencire_cart");
+  console.log("Raw cart data:", cartData); // Debug log
+  return cartData ? JSON.parse(cartData) : [];
 }
 
 function saveCart(cart) {
   localStorage.setItem("valencire_cart", JSON.stringify(cart));
+  console.log("Cart saved:", cart); // Debug log
 }
 
 // Product gradient mapping for dynamic backgrounds
@@ -581,10 +604,16 @@ function renderCart() {
   const cart = getCart();
   const container = document.getElementById("cartItems");
 
+  console.log("Rendering cart:", cart); // Debug log
   updateBackground();
 
   if (cart.length === 0) {
-    container.innerHTML = `<div class="empty-cart">Your cart is empty</div>`;
+    container.innerHTML = `
+      <div class="empty-cart">
+        Your cart is empty
+        <a href="index.html" class="empty-cart-link">Continue Shopping</a>
+      </div>
+    `;
     updateSummary();
     return;
   }
@@ -653,9 +682,7 @@ function applyCoupon() {
   }
 }
 
-const API_BASE_URL = 'http://localhost:3000/api';
-
-async function checkout() {
+function checkout() {
   const cart = getCart();
   
   if (cart.length === 0) {
@@ -663,81 +690,24 @@ async function checkout() {
     return;
   }
 
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  
-  if (!user.email) {
-    alert('Please create an account first!');
-    window.location.href = 'account create.html';
-    return;
-  }
-
   const { subtotal, discount, total } = calculateTotals();
-  const shipping = 0;
 
-  const orderData = {
-    email: user.email,
-    customerName: `${user.firstName} ${user.lastName}`,
-    items: cart.map(item => ({
-      name: item.name,
-      price: item.price,
-      quantity: item.quantity,
-      size: item.size,
-      image: item.image || 'BACK 1.png'
-    })),
-    subtotal,
-    discount,
-    shipping,
-    total,
-    shippingAddress: {
-      name: `${user.firstName} ${user.lastName}`,
-      address: '123 Fashion Street',
-      city: 'Mumbai',
-      state: 'Maharashtra',
-      zip: '400001',
-      phone: '+91 98765 43210'
-    }
-  };
-
-  const checkoutBtn = document.querySelector('.buy-btn');
-  const originalText = checkoutBtn.textContent;
-  checkoutBtn.textContent = 'PROCESSING...';
-  checkoutBtn.disabled = true;
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/order/create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(orderData)
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      localStorage.removeItem('valencire_cart');
-      alert(`✓ Order placed successfully!\nOrder #${result.orderNumber}\n\nCheck your email for confirmation.`);
-      window.location.href = 'index.html';
-    } else {
-      throw new Error(result.message);
-    }
-
-  } catch (error) {
-    console.error('Error:', error);
-    alert('Failed to process order. Please try again.');
-    checkoutBtn.textContent = originalText;
-    checkoutBtn.disabled = false;
+  // Simple checkout confirmation
+  const confirmMsg = `Order Summary:\n\nSubtotal: ₹${subtotal.toLocaleString()}\nDiscount: ₹${discount.toLocaleString()}\nShipping: FREE\nTotal: ₹${total.toLocaleString()}\n\nProceed to checkout?`;
+  
+  if (confirm(confirmMsg)) {
+    // Clear cart
+    localStorage.removeItem('valencire_cart');
+    alert('✓ Order placed successfully!\n\nThank you for shopping with VALENCIRĖ®');
+    window.location.href = 'index.html';
   }
 }
 
 // Initialize cart on page load
-window.onload = renderCart;
-
-const session = localStorage.getItem("valencire_session");
-
-if (!session) {
-  window.location.href = "/account.html";
-}
+window.onload = () => {
+  console.log("Page loaded, rendering cart..."); // Debug log
+  renderCart();
+};
 </script>
 
 </body>
