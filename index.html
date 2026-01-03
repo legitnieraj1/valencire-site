@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>VALENCIRÉ® Official Site</title>
+    <title>VALENCIRĖ® Official Site</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
@@ -877,7 +877,7 @@
         </div>
 
         <div class="logo">
-            <img src="LOGO BRO.png" alt="VALENCIRÉ">
+            <img src="LOGO BRO.png" alt="VALENCIRĖ">
         </div>
 
         <div class="header-right">
@@ -947,7 +947,7 @@
         <div class="footer-grid">
 
             <div class="footer-col">
-                <h4>VALENCIRÉ®</h4>
+                <h4>VALENCIRĖ®</h4>
                 <a href="about.html">About Us</a>
                 <a href="#">Craftsmanship</a>
                 <a href="#">Journal</a>
@@ -981,7 +981,7 @@
         </div>
 
         <div class="footer-bottom">
-            © 2025 VALENCIRÉ® — CRAFTED FOR THE EXTRAORDINARY
+            © 2025 VALENCIRĖ® – CRAFTED FOR THE EXTRAORDINARY
         </div>
     </footer>
 
@@ -1009,318 +1009,306 @@
                 <span>Total</span>
                 <span id="total">₹0</span>
             </div>
-            <button class="checkout-btn" onclick="checkout()">PROCEED TO CHECKOUT</button>
-        </div>
+            <button class="checkout-btn" onclick="checkout()">PROCEED
+                TO<!-- ================= MENU PANEL ================= -->
+                <div class="menu-panel" id="menuPanel">
+                    <div class="cart-header">
+                        <h2>MENU</h2>
+                        <span class="close-btn" onclick="closeMenu()">✕</span>
+                    </div>
+                    <div class="menu-item" onclick="filterProducts('compression'); closeMenu();">Compression T-Shirts
+                    </div>
+                    <div class="menu-item" onclick="filterProducts('oversized'); closeMenu();">Oversized T-Shirts</div>
+                    <div class="menu-item" onclick="filterProducts('new'); closeMenu();">New Arrivals</div>
+                    <div class="menu-item" onclick="window.location.href='about.html'">
+                        About Valencirė®
+                    </div>
+
+                    <div class="menu-item">Size Guide</div>
+                    <div class="menu-item">Contact</div>
+                </div>
+
+                <!-- ================= NOTIFICATION ================= -->
+                <div class="notification" id="notification"></div>
+
+                <script>
+                    // Product Data
+                    const products = [
+                        {
+                            id: 1,
+                            name: "AMETHYST NOIR™",
+                            price: 1800,
+                            category: "compression",
+                            images: { back: "BACK 1.png", front: "FRONT 1.png" },
+                            desc: "Premium compression fit with moisture-wicking technology",
+                            new: true
+                        },
+                        {
+                            id: 2,
+                            name: "blood noir™",
+                            price: 1800,
+                            category: "compression",
+                            images: { back: "BACK 2.png", front: "FRONT 3.png" },
+                            desc: "Engineered for performance and style",
+                            new: true
+                        },
+                        {
+                            id: 3,
+                            name: "PHANTOM PRO™",
+                            price: 1800,
+                            category: "oversized",
+                            images: { back: "valencire blue back .png", front: "valencire blue final out .png" },
+                            desc: "Premium compression fit with moisture-wicking technology",
+                            new: false
+                        },
+
+                    ];
+
+                    // Cart State
+                    let cart = [];
+                    let currentFilter = 'all';
+
+                    // Initialize
+                    window.onload = () => {
+                        renderProducts();
+                        loadCart();
+                    };
+
+                    // Render Products
+                    function renderProducts() {
+                        const container = document.getElementById('products');
+                        container.innerHTML = '';
+
+                        const filtered = currentFilter === 'all'
+                            ? products
+                            : products.filter(p => p.category === currentFilter || (currentFilter === 'new' && p.new));
+
+                        filtered.forEach((product, index) => {
+                            const card = document.createElement('div');
+                            card.className = 'card';
+                            card.style.animationDelay = `${index * 0.1}s`;
+
+                            card.innerHTML = `
+  <div class="image-wrap" onclick="viewProduct(${product.id})">
+    <img src="${product.images.back}" class="back" alt="${product.name}">
+    <img src="${product.images.front}" class="front" alt="${product.name}">
+    ${product.new ? '<div class="badge">NEW</div>' : ''}
+  </div>
+  <div class="card-info">
+    <h3 class="card-title" onclick="viewProduct(${product.id})" style="cursor:pointer;">${product.name}</h3>
+    <p class="card-price">₹${product.price.toLocaleString()}</p>
+    <p class="card-desc">${product.desc}</p>
+    <div class="size-selector">
+      <button class="size-btn" onclick="selectSize(this)">S</button>
+      <button class="size-btn selected" onclick="selectSize(this)">M</button>
+      <button class="size-btn" onclick="selectSize(this)">L</button>
+      <button class="size-btn" onclick="selectSize(this)">XL</button>
     </div>
+    <button class="card-btn" onclick="addToCart(${product.id}, this)">ADD TO CART</button>
+  </div>
+`;
 
-    <!-- ================= MENU PANEL ================= -->
-    <div class="menu-panel" id="menuPanel">
-        <div class="cart-header">
-            <h2>MENU</h2>
-            <span class="close-btn" onclick="closeMenu()">✕</span>
-        </div>
-        <div class="menu-item" onclick="filterProducts('compression'); closeMenu();">Compression T-Shirts</div>
-        <div class="menu-item" onclick="filterProducts('oversized'); closeMenu();">Oversized T-Shirts</div>
-        <div class="menu-item" onclick="filterProducts('new'); closeMenu();">New Arrivals</div>
-        <div class="menu-item" onclick="window.location.href='about.html'">
-            About Valenciré®
-        </div>
+                            container.appendChild(card);
+                        });
+                    }
 
-        <div class="menu-item">Size Guide</div>
-        <div class="menu-item">Contact</div>
+                    // View Product Landing Page
+                    function viewProduct(productId) {
+                        const product = products.find(p => p.id === productId);
+                        if (!product) return;
+
+                        // Redirect to product page with product ID
+                        window.location.href = `product.html?product=${product.id}`;
+                    }
+
+                    // Filter Products
+                    function filterProducts(category) {
+                        currentFilter = category;
+                        renderProducts();
+
+                        document.querySelectorAll('.filter-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        event.target.classList.add('active');
+
+                        scrollToShop();
+                    }
+
+                    // Size Selection
+                    function selectSize(btn) {
+                        btn.closest('.size-selector').querySelectorAll('.size-btn').forEach(b => {
+                            b.classList.remove('selected');
+                        });
+                        btn.classList.add('selected');
+                    }
+
+                    // Add to Cart
+                    function addToCart(productId, btn) {
+                        const product = products.find(p => p.id === productId);
+                        const sizeBtn = btn.closest('.card-info').querySelector('.size-btn.selected');
+                        const size = sizeBtn ? sizeBtn.textContent : 'M';
+
+                        const existingItem = cart.find(item => item.id === productId && item.size === size);
+
+                        if (existingItem) {
+                            existingItem.quantity++;
+                        } else {
+                            cart.push({
+                                id: productId,
+                                name: product.name,
+                                price: product.price,
+                                size: size,
+                                image: product.images.back,
+                                quantity: 1
+                            });
+                        }
+
+                        saveCart();
+                        updateCart();
+                        showNotification('Added to cart');
+                    }
+
+                    // Update Cart Display
+                    function updateCart() {
+                        const itemsContainer = document.getElementById('cartItems');
+                        const summary = document.getElementById('cartSummary');
+                        const countBadge = document.getElementById('cartCount');
+
+                        if (cart.length === 0) {
+                            itemsContainer.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
+                            summary.style.display = 'none';
+                            countBadge.classList.remove('active');
+                        } else {
+                            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                            countBadge.textContent = totalItems;
+                            countBadge.classList.add('active');
+
+                            itemsContainer.innerHTML = cart.map(item => `
+  <div class="cart-item">
+    <img src="${item.image}" class="cart-item-img" alt="${item.name}">
+    <div class="cart-item-details">
+      <div class="cart-item-title">${item.name}</div>
+      <div class="cart-item-meta">Size: ${item.size}</div>
+      <div class="cart-item-price">₹${item.price.toLocaleString()}</div>
+      <div class="quantity-control">
+        <button class="qty-btn" onclick="updateQuantity(${item.id}, '${item.size}', -1)">−</button>
+        <span class="qty-display">${item.quantity}</span>
+        <button class="qty-btn" onclick="updateQuantity(${item.id}, '${item.size}', 1)">+</button>
+      </div>
+      <div class="remove-item" onclick="removeItem(${item.id}, '${item.size}')">Remove</div>
     </div>
+  </div>
+`).join('');
 
-    <!-- ================= NOTIFICATION ================= -->
-    <div class="notification" id="notification"></div>
+                            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                            document.getElementById('subtotal').textContent = `₹${subtotal.toLocaleString()}`;
+                            document.getElementById('total').textContent = `₹${subtotal.toLocaleString()}`;
+                            summary.style.display = 'block';
+                        }
+                    }
 
-    <script>
-        // Product Data
-        const products = [
-            {
-                id: 1,
-                name: "AMETHYST NOIR™",
-                price: 1800,
-                category: "compression",
-                images: { back: "BACK 1.png", front: "FRONT 1.png" },
-                desc: "Premium compression fit with moisture-wicking technology",
-                new: true
-            },
-            {
-                id: 2,
-                name: "blood noir™",
-                price: 1800,
-                category: "compression",
-                images: { back: "BACK 2.png", front: "FRONT 3.png" },
-                desc: "Engineered for performance and style",
-                new: true
-            },
-            {
-                id: 3,
-                name: "PHANTOM PRO™",
-                price: 1800,
-                category: "oversized",
-                images: { back: "valencire blue back .png", front: "valencire blue final out .png" },
-                desc: "Premium compression fit with moisture-wicking technology",
-                new: false
-            },
+                    // Update Quantity
+                    function updateQuantity(id, size, change) {
+                        const item = cart.find(i => i.id === id && i.size === size);
+                        if (item) {
+                            item.quantity += change;
+                            if (item.quantity <= 0) {
+                                removeItem(id, size);
+                            } else {
+                                saveCart();
+                                updateCart();
+                            }
+                        }
+                    }
 
-        ];
+                    // Remove Item
+                    function removeItem(id, size) {
+                        cart = cart.filter(item => !(item.id === id && item.size === size));
+                        saveCart();
+                        updateCart();
+                        showNotification('Item removed');
+                    }
 
-        // Cart State
-        let cart = [];
-        let currentFilter = 'all';
+                    // Toggle Cart
+                    function toggleCart() {
+                        const panel = document.getElementById('cartPanel');
+                        const menu = document.getElementById('menuPanel');
+                        menu.classList.remove('active');
+                        panel.classList.toggle('active');
+                    }
 
-        // Initialize
-        window.onload = () => {
-            renderProducts();
-            loadCart();
-        };
+                    // Menu Functions
+                    function openMenu() {
+                        const panel = document.getElementById('menuPanel');
+                        const cart = document.getElementById('cartPanel');
+                        cart.classList.remove('active');
+                        panel.classList.add('active');
+                    }
 
-        // Render Products
-        function renderProducts() {
-            const container = document.getElementById('products');
-            container.innerHTML = '';
+                    function closeMenu() {
+                        document.getElementById('menuPanel').classList.remove('active');
+                    }
 
-            const filtered = currentFilter === 'all'
-                ? products
-                : products.filter(p => p.category === currentFilter || (currentFilter === 'new' && p.new));
+                    // Checkout
+                    function checkout() {
+                        showNotification('Proceeding to checkout...');
+                        setTimeout(() => {
+                            alert('Checkout functionality would be integrated here with payment gateway');
+                        }, 500);
+                    }
 
-            filtered.forEach((product, index) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.style.animationDelay = `${index * 0.1}s`;
+                    // Newsletter
+                    function subscribeNewsletter(e) {
+                        e.preventDefault();
+                        showNotification('Thank you for subscribing!');
+                        e.target.reset();
+                    }
 
-                card.innerHTML = `
-      <div class="image-wrap" onclick="viewProduct(${product.id})">
-        <img src="${product.images.back}" class="back" alt="${product.name}">
-        <img src="${product.images.front}" class="front" alt="${product.name}">
-        ${product.new ? '<div class="badge">NEW</div>' : ''}
-      </div>
-      <div class="card-info">
-        <h3 class="card-title" onclick="viewProduct(${product.id})" style="cursor:pointer;">${product.name}</h3>
-        <p class="card-price">₹${product.price.toLocaleString()}</p>
-        <p class="card-desc">${product.desc}</p>
-        <div class="size-selector">
-          <button class="size-btn" onclick="selectSize(this)">S</button>
-          <button class="size-btn selected" onclick="selectSize(this)">M</button>
-          <button class="size-btn" onclick="selectSize(this)">L</button>
-          <button class="size-btn" onclick="selectSize(this)">XL</button>
-        </div>
-        <button class="card-btn" onclick="addToCart(${product.id}, this)">ADD TO CART</button>
-      </div>
-    `;
+                    // Notification
+                    function showNotification(message) {
+                        const notif = document.getElementById('notification');
+                        notif.textContent = message;
+                        notif.classList.add('show');
+                        setTimeout(() => {
+                            notif.classList.remove('show');
+                        }, 3000);
+                    }
 
-                container.appendChild(card);
-            });
-        }
+                    // Scroll Functions
+                    function scrollToShop() {
+                        document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+                    }
 
-        // View Product Landing Page
-        function viewProduct(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
+                    // Header Scroll Effect
+                    window.addEventListener('scroll', () => {
+                        const header = document.getElementById('header');
+                        if (window.scrollY > 100) {
+                            header.classList.add('scrolled');
+                        } else {
+                            header.classList.remove('scrolled');
+                        }
+                    });
 
-            // Create URL-friendly slug
-            const slug = product.name
-                .toLowerCase()
-                .replace(/™/g, '')
-                .replace(/\s+/g, '-')
-                .replace(/[^a-z0-9-]/g, '');
+                    // Local Storage
+                    function saveCart() {
+                        const data = JSON.stringify(cart);
+                        try {
+                            cart = JSON.parse(data);
+                        } catch (e) {
+                            console.log('Cart updated');
+                        }
+                    }
 
-            // Redirect to product page
-            window.location.href = `product.html?product=${slug}`;
-        }
+                    function loadCart() {
+                        updateCart();
+                    }
 
-        // Filter Products
-        function filterProducts(category) {
-            currentFilter = category;
-            renderProducts();
-
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
-            scrollToShop();
-        }
-
-        // Size Selection
-        function selectSize(btn) {
-            btn.closest('.size-selector').querySelectorAll('.size-btn').forEach(b => {
-                b.classList.remove('selected');
-            });
-            btn.classList.add('selected');
-        }
-
-        // Add to Cart
-        function addToCart(productId, btn) {
-            const product = products.find(p => p.id === productId);
-            const sizeBtn = btn.closest('.card-info').querySelector('.size-btn.selected');
-            const size = sizeBtn ? sizeBtn.textContent : 'M';
-
-            const existingItem = cart.find(item => item.id === productId && item.size === size);
-
-            if (existingItem) {
-                existingItem.quantity++;
-            } else {
-                cart.push({
-                    id: productId,
-                    name: product.name,
-                    price: product.price,
-                    size: size,
-                    image: product.images.back,
-                    quantity: 1
-                });
-            }
-
-            saveCart();
-            updateCart();
-            showNotification('Added to cart');
-        }
-
-        // Update Cart Display
-        function updateCart() {
-            const itemsContainer = document.getElementById('cartItems');
-            const summary = document.getElementById('cartSummary');
-            const countBadge = document.getElementById('cartCount');
-
-            if (cart.length === 0) {
-                itemsContainer.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
-                summary.style.display = 'none';
-                countBadge.classList.remove('active');
-            } else {
-                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-                countBadge.textContent = totalItems;
-                countBadge.classList.add('active');
-
-                itemsContainer.innerHTML = cart.map(item => `
-      <div class="cart-item">
-        <img src="${item.image}" class="cart-item-img" alt="${item.name}">
-        <div class="cart-item-details">
-          <div class="cart-item-title">${item.name}</div>
-          <div class="cart-item-meta">Size: ${item.size}</div>
-          <div class="cart-item-price">₹${item.price.toLocaleString()}</div>
-          <div class="quantity-control">
-            <button class="qty-btn" onclick="updateQuantity(${item.id}, '${item.size}', -1)">−</button>
-            <span class="qty-display">${item.quantity}</span>
-            <button class="qty-btn" onclick="updateQuantity(${item.id}, '${item.size}', 1)">+</button>
-          </div>
-          <div class="remove-item" onclick="removeItem(${item.id}, '${item.size}')">Remove</div>
-        </div>
-      </div>
-    `).join('');
-
-                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                document.getElementById('subtotal').textContent = `₹${subtotal.toLocaleString()}`;
-                document.getElementById('total').textContent = `₹${subtotal.toLocaleString()}`;
-                summary.style.display = 'block';
-            }
-        }
-
-        // Update Quantity
-        function updateQuantity(id, size, change) {
-            const item = cart.find(i => i.id === id && i.size === size);
-            if (item) {
-                item.quantity += change;
-                if (item.quantity <= 0) {
-                    removeItem(id, size);
-                } else {
-                    saveCart();
-                    updateCart();
-                }
-            }
-        }
-
-        // Remove Item
-        function removeItem(id, size) {
-            cart = cart.filter(item => !(item.id === id && item.size === size));
-            saveCart();
-            updateCart();
-            showNotification('Item removed');
-        }
-
-        // Toggle Cart
-        function toggleCart() {
-            const panel = document.getElementById('cartPanel');
-            const menu = document.getElementById('menuPanel');
-            menu.classList.remove('active');
-            panel.classList.toggle('active');
-        }
-
-        // Menu Functions
-        function openMenu() {
-            const panel = document.getElementById('menuPanel');
-            const cart = document.getElementById('cartPanel');
-            cart.classList.remove('active');
-            panel.classList.add('active');
-        }
-
-        function closeMenu() {
-            document.getElementById('menuPanel').classList.remove('active');
-        }
-
-        // Checkout
-        function checkout() {
-            showNotification('Proceeding to checkout...');
-            setTimeout(() => {
-                alert('Checkout functionality would be integrated here with payment gateway');
-            }, 500);
-        }
-
-        // Newsletter
-        function subscribeNewsletter(e) {
-            e.preventDefault();
-            showNotification('Thank you for subscribing!');
-            e.target.reset();
-        }
-
-        // Notification
-        function showNotification(message) {
-            const notif = document.getElementById('notification');
-            notif.textContent = message;
-            notif.classList.add('show');
-            setTimeout(() => {
-                notif.classList.remove('show');
-            }, 3000);
-        }
-
-        // Scroll Functions
-        function scrollToShop() {
-            document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Header Scroll Effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Local Storage
-        function saveCart() {
-            const data = JSON.stringify(cart);
-            try {
-                cart = JSON.parse(data);
-            } catch (e) {
-                console.log('Cart updated');
-            }
-        }
-
-        function loadCart() {
-            updateCart();
-        }
-
-        // Close panels on escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                document.getElementById('cartPanel').classList.remove('active');
-                document.getElementById('menuPanel').classList.remove('active');
-            }
-        });
-    </script>
-
-</body>
-
-</html>
+                    // Close panels on escape
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape') {
+                            document.getElementById('cartPanel').classList.remove('active');
+                            document.getElementById('menuPanel').classList.remove('active');
+                        }
+                    });
+                </script>
+           </parameter>
