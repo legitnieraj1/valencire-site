@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Product Collection - VALENCIRÉ®</title>
+<title>Product Collection - VALENCIRĖ®</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -946,7 +946,7 @@ button,
 <!-- ================= HEADER ================= -->
 <header>
   <a href="index.html" class="logo">
-  <img src="LOGO BRO.png" alt="VALENCIRÉ®">
+  <img src="LOGO BRO.png" alt="VALENCIRĖ®">
 </a>
   <div class="nav-links">
     <div class="nav-link" onclick="scrollToSection('features')">Features</div>
@@ -998,7 +998,7 @@ button,
         
         <div class="cta-buttons">
           <button class="btn-primary" onclick="addToCart()">
-            ADD TO CART — ₹<span id="totalPrice">1,800</span>
+            ADD TO CART – ₹<span id="totalPrice">1,800</span>
           </button>
           <button class="btn-secondary" onclick="buyNow()">BUY NOW</button>
         </div>
@@ -1006,8 +1006,7 @@ button,
     </div>
     
     <div class="product-images single" id="productImages"></div>
-
-
+  </div>
 </section>
 
 <!-- ================= FEATURES ================= -->
@@ -1057,7 +1056,7 @@ button,
     <div class="footer-link">Care Instructions</div>
     <div class="footer-link">Contact Us</div>
   </div>
-  <div class="copyright">© 2025 VALENCIRÉ® — AIN'T FOR AVERAGE</div>
+  <div class="copyright">© 2025 VALENCIRĖ® – AIN'T FOR AVERAGE</div>
 </footer>
 
 <!-- ================= NOTIFICATION ================= -->
@@ -1164,14 +1163,16 @@ let cart = JSON.parse(localStorage.getItem("valencire_cart")) || [];
 window.onload = () => {
   renderProductSelector();
   
-  // Check URL parameter for product
+  // Check URL parameter for product ID
   const urlParams = new URLSearchParams(window.location.search);
   const productId = urlParams.get('product');
   
   if (productId) {
+    // Find product by ID
     const index = products.findIndex(p => p.id == productId);
     loadProduct(index >= 0 ? index : 0);
   } else {
+    // Default to first product
     loadProduct(0);
   }
   
@@ -1342,7 +1343,7 @@ function addToCart() {
     cart.push(item);
   }
 
-  saveCart();          // 🔥 THIS NOW REALLY SAVES
+  saveCart();
   updateCartCount();
   showNotification(`Added ${quantity}x ${product.name} (Size ${selectedSize})`);
 }
