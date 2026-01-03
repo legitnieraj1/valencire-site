@@ -1373,6 +1373,7 @@ function updateCartCount() {
 
 function saveCart() {
   localStorage.setItem("valencire_cart", JSON.stringify(cart));
+  console.log("Cart saved to localStorage:", cart);
 }
 
 
