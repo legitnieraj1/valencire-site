@@ -83,7 +83,8 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 28px;
+            gap: 20px;
+            /* slightly reduced for better balance after removing search icon */
         }
 
         .icon-wrapper {
@@ -138,7 +139,19 @@
             overflow: hidden;
         }
 
-        .hero video {
+        /* desktop hero video – remains untouched for desktop */
+        .hero video.hero-video-desktop {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(1.00) contrast(1.00) saturate(1.00);
+        }
+
+        /* mobile hero video – hidden by default on desktop */
+        .hero video.hero-video-mobile {
+            display: none;
             position: absolute;
             inset: 0;
             width: 100%;
@@ -176,14 +189,14 @@
         }
 
         @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
             from {
                 opacity: 0;
                 transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
@@ -441,7 +454,6 @@
             transition: .5s cubic-bezier(.4, 0, .2, 1);
             z-index: 6000;
             border-left: 1px solid rgba(245, 245, 245, 0.1);
-            overflow-y: auto;
         }
 
         .cart-panel.active {
@@ -755,7 +767,6 @@
         }
 
         /* ================= MENU PANEL ================= */
-        /* ================= MENU PANEL ================= */
         .menu-panel {
             position: fixed;
             top: 0;
@@ -824,21 +835,68 @@
 
         /* ================= RESPONSIVE ================= */
         @media(max-width:768px) {
+
+            /* HEADER MOBILE LAYOUT */
             header {
-                padding: 0 30px;
+                padding: 0 16px;
+                height: 72px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
             }
 
             .header-left {
                 display: none;
             }
 
+            .header-right {
+                margin-left: auto;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
+
+            .logo {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
             .logo img {
                 height: 120px;
+            }
+
+            /* HERO MOBILE RESPONSIVE TWEAKS */
+            .hero {
+                height: 100vh;
+            }
+
+            /* swap videos: hide desktop, show mobile */
+            .hero video.hero-video-desktop {
+                display: none;
+            }
+
+            .hero video.hero-video-mobile {
+                display: block;
+            }
+
+            .hero-content {
+                bottom: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%;
+                padding: 0 24px;
+                text-align: center;
             }
 
             .hero-title {
                 font-size: 36px;
                 letter-spacing: 6px;
+            }
+
+            .shop-btn {
+                padding: 16px 32px;
+                width: auto;
             }
 
             .products {
@@ -961,7 +1019,7 @@
 
 <body>
 
-    !-- ================= PAGE LOADER ================= -->
+    <!-- ================= PAGE LOADER ================= -->
 
     <div class="page-loader" id="pageLoader">
         <img src="LOGO BRO.png" alt="VALENCIRĖ" class="loader-logo">
@@ -974,7 +1032,6 @@
     <!-- Transition Overlay -->
     <div class="transition-overlay" id="transitionOverlay"></div>
 
-
     <!-- ================= HEADER ================= -->
     <header id="header">
         <div class="header-left">
@@ -986,17 +1043,12 @@
         </div>
 
         <div class="header-right">
-            <svg class="icon" viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="7"></circle>
-                <line x1="16.65" y1="16.65" x2="21" y2="21"></line>
-            </svg>
-
+            <!-- search icon removed -->
             <svg class="icon" viewBox="0 0 24 24" onclick="window.location.href='account.html'"
                 style="cursor: pointer;">
                 <circle cx="12" cy="8" r="4"></circle>
                 <path d="M4 20c2-4 14-4 16 0"></path>
             </svg>
-
 
             <div class="icon-wrapper" onclick="toggleCart()">
                 <svg class="icon" viewBox="0 0 24 24">
@@ -1012,9 +1064,16 @@
 
     <!-- ================= HERO ================= -->
     <section class="hero">
-        <video autoplay muted loop playsinline>
+        <!-- DESKTOP HERO VIDEO (unchanged src) -->
+        <video class="hero-video-desktop" autoplay muted loop playsinline>
             <source src="video.mp4" type="video/mp4">
         </video>
+
+        <!-- MOBILE HERO VIDEO  -->
+        <video class="hero-video-mobile" autoplay muted loop playsinline>
+            <source src="videomobile.mp4" type="video/mp4">
+        </video>
+
         <div class="hero-overlay"></div>
 
         <div class="hero-content">
@@ -1138,8 +1197,6 @@
     <div class="notification" id="notification"></div>
 
     <script>
-
-
         // ================= PAGE LOADER & TRANSITIONS =================
 
         // Hide loader when page is fully loaded
@@ -1296,12 +1353,11 @@
     <button class="card-btn" onclick="addToCart(${product.id}, this)">ADD TO CART</button>
   </div>
 `;
-
                 container.appendChild(card);
             });
         }
 
-        // View Product Landing Page
+        // View Product Landing Page (non-transition version – left as in file)
         function viewProduct(productId) {
             const product = products.find(p => p.id === productId);
             if (!product) return;
@@ -1427,13 +1483,6 @@
         }
 
         // Menu Functions
-        function openMenu() {
-            const panel = document.getElementById('menuPanel');
-            const cart = document.getElementById('cartPanel');
-            cart.classList.remove('active'); // Close cart if open
-            panel.classList.add('active');
-        }
-
         function closeMenu() {
             document.getElementById('menuPanel').classList.remove('active');
         }
@@ -1478,7 +1527,7 @@
             }
         });
 
-        // Local Storage
+        // Local Storage (note: original implementation is a stub)
         function saveCart() {
             const data = JSON.stringify(cart);
             try {
@@ -1500,4 +1549,6 @@
             }
         });
     </script>
-    </parameter>
+</body>
+
+</html>
