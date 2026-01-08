@@ -265,103 +265,114 @@
         // TODO: Replace these placeholders with your actual Supabase project details
         const SUPABASE_URL = 'https://crqeqejgdrjujsuvihsx.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNycWVxZWpnZHJqdWpzdXZpaHN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY1NjMxMTgsImV4cCI6MjA4MjEzOTExOH0.0Cb4nLFM8g6Aq6XRglrrXNpKknGAf30GfHy0QMqmjbA';
-        const supabase = window.supabase.createClient(https://crqeqejgdrjujsuvihsx.supabase.co, eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNycWVxZWpnZHJqdWpzdXZpaHN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY1NjMxMTgsImV4cCI6MjA4MjEzOTExOH0.0Cb4nLFM8g6Aq6XRglrrXNpKknGAf30GfHy0QMqmjbA);
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            function switchTab(tab) {
-                const tabs = document.querySelectorAll('.tab');
-                const contents = document.querySelectorAll('.form-content');
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.form-content');
 
-                tabs.forEach(t => t.classList.remove('active'));
-                contents.forEach(c => c.classList.remove('active'));
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
 
-                event.target.classList.add('active');
-                document.getElementById(tab).classList.add('active');
-            }
+            event.target.classList.add('active');
+            document.getElementById(tab).classList.add('active');
+        }
 
         async function handleSignIn(e) {
-                e.preventDefault();
-                const email = document.getElementById('signin-email').value;
-                const password = document.getElementById('signin-password').value;
+            e.preventDefault();
+            const email = document.getElementById('signin-email').value;
+            const password = document.getElementById('signin-password').value;
 
-                try {
-                    const { data, error } = await supabase.auth.signInWithPassword({
-                        email: email,
-                        password: password,
-                    });
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
 
-                    if (error) throw error;
+                if (error) throw error;
 
-                    alert('Sign in successful! Welcome back.');
-                    console.log('User:', data.user);
-                    // Redirect or update UI here
-                    // window.location.href = '/dashboard.html'; 
+                alert('Sign in successful! Welcome back.');
+                console.log('User:', data.user);
+                // Redirect to cart
+                window.location.href = 'cart.html';
 
-                } catch (error) {
-                    alert('Error signing in: ' + error.message);
-                }
+            } catch (error) {
+                alert('Error signing in: ' + error.message);
             }
+        }
 
         async function handleSignUp(e) {
-                e.preventDefault();
-                const firstName = document.getElementById('signup-firstname').value;
-                const lastName = document.getElementById('signup-lastname').value;
-                const email = document.getElementById('signup-email').value;
-                const password = document.getElementById('signup-password').value;
-                const confirmPassword = document.getElementById('signup-confirm').value;
+            e.preventDefault();
+            const firstName = document.getElementById('signup-firstname').value;
+            const lastName = document.getElementById('signup-lastname').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm').value;
 
-                if (password !== confirmPassword) {
-                    alert("Passwords do not match!");
-                    return;
-                }
-
-                try {
-                    const { data, error } = await supabase.auth.signUp({
-                        email: email,
-                        password: password,
-                        options: {
-                            data: {
-                                first_name: firstName,
-                                last_name: lastName
-                            }
-                        }
-                    });
-
-                    if (error) throw error;
-
-                    alert('Sign up successful! Please check your email for the confirmation link.');
-                    console.log('User:', data.user);
-
-                } catch (error) {
-                    alert('Error signing up: ' + error.message);
-                }
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
             }
+
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            first_name: firstName,
+                            last_name: lastName
+                        }
+                    }
+                });
+
+                if (error) throw error;
+
+                alert('Sign up successful! Please check your email for the confirmation link.');
+                console.log('User:', data.user);
+
+                // For development/testing, if email confirmation is disabled in Supabase, 
+                // the user is logged in automatically.
+                if (data.user) {
+                    window.location.href = 'cart.html';
+                } else {
+                    // If email confirmation is ON, they can't login yet.
+                    window.location.href = 'index.html';
+                }
+
+            } catch (error) {
+                alert('Error signing up: ' + error.message);
+            }
+        }
 
         async function handleCredentialResponse(response) {
-                // Google Sign-In Handler
-                try {
-                    const { data, error } = await supabase.auth.signInWithIdToken({
-                        provider: 'google',
-                        token: response.credential,
-                    });
+            // Google Sign-In Handler
+            try {
+                const { data, error } = await supabase.auth.signInWithIdToken({
+                    provider: 'google',
+                    token: response.credential,
+                });
 
-                    if (error) throw error;
+                if (error) throw error;
 
-                    console.log('Google Sign-In User:', data.user);
-                    alert('Logged in with Google as: ' + data.user.email);
-                } catch (error) {
-                    console.error('Error with Google Sign-In:', error);
-                    alert('Error logging in with Google: ' + error.message);
-                }
+                console.log('Google Sign-In User:', data.user);
+                alert('Logged in with Google as: ' + data.user.email);
+                window.location.href = 'cart.html';
+            } catch (error) {
+                console.error('Error with Google Sign-In:', error);
+                alert('Error logging in with Google: ' + error.message);
             }
+        }
 
         // Check active session on load
         window.onload = async function () {
-                const { data: { session } } = await supabase.auth.getSession();
-                if (session) {
-                    console.log('User already logged in:', session.user);
-                    // Optional: Auto-redirect if already logged in
-                }
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                console.log('User already logged in:', session.user);
+                // Auto-redirect if already logged in (e.g. if coming from cart)
+                window.location.href = 'cart.html';
             }
+        }
     </script>
 </body>
 
